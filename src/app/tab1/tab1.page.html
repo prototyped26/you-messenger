@@ -1,41 +1,59 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-title>
-      Tab One
-    </ion-title>
-  </ion-toolbar>
-</ion-header>
+
 
 <ion-content>
-    <ion-card class="welcome-card">
-      <ion-img src="/assets/shapes.svg"></ion-img>
-      <ion-card-header>
-        <ion-card-subtitle>Get Started</ion-card-subtitle>
-        <ion-card-title>Welcome to Ionic</ion-card-title>
-      </ion-card-header>
-      <ion-card-content>
-        <p>Now that your app has been created, you'll want to start building out features and components. Check out some of the resources below for next steps.</p>
-      </ion-card-content>
-    </ion-card>
-    <ion-list lines="none">
-      <ion-list-header>
-        <ion-label>Resources</ion-label>
-      </ion-list-header>
-      <ion-item href="https://beta.ionicframework.com/docs/">
-        <ion-icon slot="start" color="medium" name="book"></ion-icon>
-        <ion-label>Ionic Documentation</ion-label>
-      </ion-item>
-      <ion-item href="https://beta.ionicframework.com/docs/building/scaffolding">
-        <ion-icon slot="start" color="medium" name="build"></ion-icon>
-        <ion-label>Scaffold Out Your App</ion-label>
-      </ion-item>
-      <ion-item href="https://beta.ionicframework.com/docs/layout/structure">
-        <ion-icon slot="start" color="medium" name="grid"></ion-icon>
-        <ion-label>Change Your App Layout</ion-label>
-      </ion-item>
-      <ion-item href="https://beta.ionicframework.com/docs/theming/basics">
-        <ion-icon slot="start" color="medium" name="color-fill"></ion-icon>
-        <ion-label>Theme Your App</ion-label>
-      </ion-item>
-    </ion-list>
+
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button>
+      <ion-icon name="add"></ion-icon>
+    </ion-fab-button>
+    <ion-fab-list side="top">
+      <ion-fab-button (click)="onOpenSearch()"><ion-icon name="text"></ion-icon></ion-fab-button>
+      <ion-fab-button><ion-icon name="contacts"></ion-icon></ion-fab-button>
+    </ion-fab-list>
+  </ion-fab>
+
+  <ion-grid style="margin-top: 8%">
+    <ion-row *ngIf="discussions.length === 0">
+      <ion-col></ion-col>
+      <ion-col size="8">
+        <img style="margin: auto;filter: blur(1px);opacity: .2;" src="./../../assets/icon/teamwork_512.png" alt="">
+        <br>
+        <p class="text-color-home" style="text-align: center;opacity: .2;font-size: 1.2rem;font-weight: bold;">
+          Lancer une discussion
+        </p>
+      </ion-col>
+      <ion-col></ion-col>
+    </ion-row>
+
+    <ion-row *ngIf="discussions.length > 0">
+      <ion-list style="width: 97%;">
+        <ion-item *ngFor="let discussion of discussions" (click)="onGoto(discussion.user)">
+          <ion-avatar slot="start">
+            <img *ngIf="discussion.user.photo === null" src="./../../assets/icon/avatar.png">
+            <img *ngIf="discussion.user.photo !== null" [src]="discussion.user.photo">
+          </ion-avatar>
+          <ion-label>
+            <h2> <b> {{discussion.user.nom + ' ' + (discussion.user.prenom ? discussion.user.prenom : '')}} </b> {{ ' ' +discussion.user.telephone}}</h2>
+            <h3 style="font-style: italic;font-size: 0.8em;">
+              {{
+
+              (discussion.messages.length > 0 ?
+              ( discussion.messages[discussion.messages.length - 1].content.length > 40 ? discussion.messages[discussion.messages.length - 1].content.substr(0, 44) : discussion.messages[discussion.messages.length - 1].content )
+              : '')
+              }}
+            </h3>
+            <p *ngIf="countNotSee(discussion.messages) > 0" style="
+              position: absolute;
+              right: 0;
+              top: 0;
+              margin-top: 12px;">
+              <ion-badge color="secondary"> {{ countNotSee(discussion.messages) }} </ion-badge>
+            </p>
+          </ion-label>
+        </ion-item>
+      </ion-list>
+    </ion-row>
+  </ion-grid>
+
+
 </ion-content>

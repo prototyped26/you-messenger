@@ -1,5 +1,7 @@
 {
   "name": "you-messenger",
-  "integrations": {},
+  "integrations": {
+    "cordova": {}
+  },
   "type": "angular"
 }

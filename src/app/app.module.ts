@@ -8,11 +8,38 @@ import { StatusBar } from '@ionic-native/status-bar/ngx';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import {ContactListPage} from './screens/contact-list/contact-list.page';
+import {IonicStorageModule} from '@ionic/storage';
+import {HttpClientModule} from '@angular/common/http';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import { SocketIoModule, SocketIoConfig } from 'ng-socket-io';
 
+import {CommonModule} from '@angular/common';
+
+//  const ioConf: SocketIoConfig = { url: 'http://localhost:3000', options: {}};
+const ioConf: SocketIoConfig = { url: 'http://192.168.8.104:3000', options: {}};
+const firebase = {
+    apiKey: 'AIzaSyD6fpPKUn2D8uGp2Gvpw8IYjhB4t91e2po',
+    authDomain: 'you-messenger-8c9d9.firebaseapp.com',
+    databaseURL: 'https://you-messenger-8c9d9.firebaseio.com',
+    projectId: 'you-messenger-8c9d9',
+    storageBucket: 'you-messenger-8c9d9.appspot.com',
+    messagingSenderId: '1057649044428'
+};
 @NgModule({
-  declarations: [AppComponent],
-  entryComponents: [],
-  imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule],
+  declarations: [AppComponent, ContactListPage],
+  entryComponents: [ContactListPage],
+  imports: [
+      BrowserModule,
+      IonicModule.forRoot(),
+      AppRoutingModule,
+      IonicStorageModule.forRoot(),
+      HttpClientModule,
+      FormsModule,
+      ReactiveFormsModule,
+      SocketIoModule.forRoot(ioConf),
+      CommonModule,
+  ],
   providers: [
     StatusBar,
     SplashScreen,

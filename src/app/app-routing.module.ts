@@ -1,8 +1,13 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
+import {TokenGuard} from './guards/token.guard';
 
 const routes: Routes = [
-  { path: '', loadChildren: './tabs/tabs.module#TabsPageModule' }
+  { path: '', canActivate: [TokenGuard], loadChildren: './tabs/tabs.module#TabsPageModule' },
+  { path: 'welcome', loadChildren: './screens/welcome/welcome.module#WelcomePageModule' },
+  { path: 'sign-in', loadChildren: './screens/sign-in/sign-in.module#SignInPageModule' },
+  { path: 'contact-list', loadChildren: './screens/contact-list/contact-list.module#ContactListPageModule' },
+  { path: 'conversation', canActivate: [TokenGuard], loadChildren: './pages/conversation/conversation.module#ConversationPageModule' }
 ];
 @NgModule({
   imports: [RouterModule.forRoot(routes)],

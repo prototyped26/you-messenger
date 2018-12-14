@@ -1,0 +1,46 @@
+
+<ion-content>
+  <div style="height: 100%;">
+      <div class='box-2'>
+          <div class='wave -one'></div>
+          <div class='wave -two'></div>
+          <div class='wave -three'></div>
+          <div class='title'>
+              Inscrivez-vous
+          </div>
+      </div>
+
+      <div style="">
+          <ion-grid style="margin-top: 5%">
+              <ion-row>
+                  <ion-col></ion-col>
+                  <ion-col size="6" text-center>
+                      <ion-avatar style="margin: auto;">
+                          <img src="./../../../assets/icon/avatar.png">
+                      </ion-avatar>
+                  </ion-col>
+                  <ion-col></ion-col>
+              </ion-row>
+          </ion-grid>
+          <form >
+              <ion-list>
+                  <ion-item>
+                      <ion-label class="text-color-home" position="floating">Numéro de téléphone</ion-label>
+                      <ion-input name="telephone" [(ngModel)]="telephone" type="number" placeholder="6 95 ** ** **"></ion-input>
+                  </ion-item>
+                  <br>
+                  <ion-item>
+                      <ion-label class="text-color-home" position="floating">Nom</ion-label>
+                      <ion-input name="nom" [(ngModel)]="nom" type="text" placeholder="John Doh"></ion-input>
+                  </ion-item>
+
+                  <br><br>
+                  <ion-button (click)="onConitnue()" expand="full" color="primary">
+                      Continuer
+                      <ion-icon slot="end" name="arrow-round-forward"></ion-icon>
+                  </ion-button>
+              </ion-list>
+          </form>
+      </div>
+  </div>
+</ion-content>

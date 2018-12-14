@@ -1,0 +1,67 @@
+<ion-content style="">
+  <div class="back-color-home" style="
+  padding-left: 0; padding-top: 30px;
+  -webkit-box-shadow: 1px 5px 15px 2px rgba(0,0,0,0.32);
+    box-shadow: 1px 5px 15px 2px #3880ff63;
+">
+    <ion-row>
+      <ion-col size="1">
+        <ion-icon (click)="onGoBakc()" style="font-size: 1.4em; padding-top: 14px" name="arrow-round-back"></ion-icon>
+      </ion-col>
+      <ion-col size="2">
+        <ion-avatar >
+          <img *ngIf="toUser === null" style="width: 40px; height: 40px; margin-top: 8px" src="./../../../assets/icon/avatar.png">
+          <img *ngIf="toUser !== null && toUser.photo !== null" style="width: 40px; height: 40px; margin-top: 8px" [src]="toUser.photo">
+          <img *ngIf="toUser !== null && toUser.photo === null" style="width: 40px; height: 40px; margin-top: 8px" src="./../../../assets/icon/avatar.png">
+        </ion-avatar>
+      </ion-col>
+      <ion-col>
+        <p style="font-weight: bold">
+          {{ (toUser ? (toUser.nom === null || toUser.nom === '' ? toUser.telephone : toUser.nom ) : '') }}
+        </p>
+      </ion-col>
+    </ion-row>
+  </div>
+  <div style="padding-top: 80px; background: #989aa2; height: 100%; background: url(./../../../assets/background/trianglify.png)">
+
+     <div class="conversation-message zone-content">
+       <div #zone class="content zone">
+         <!--div class="bubble you">
+           I'm in California dreaming
+         </div>
+         <div class="bubble me">
+           ... about who we used to be.
+         </div>
+         <div class="bubble me">
+           Are you serious?
+         </div -->
+         <div *ngFor="let msg of messages" class="bubble" [ngClass]="{'me': msg.origin === 'me', 'you': msg.origin === 'you'}">
+           {{ msg.content }}
+         </div>
+       </div>
+     </div>
+
+    <div class="input-conversation">
+      <ion-row>
+        <ion-col size="11" class="input-emoji">
+          <ion-row>
+            <ion-col size="9">
+              <ion-input name="message" [(ngModel)]="message" placeholder="Votre message ... "></ion-input>
+            </ion-col>
+            <ion-col size="2">
+              <ion-icon (click)="onSendMessage()" class="icon-conversation" name="send"></ion-icon>
+            </ion-col>
+            <ion-col size="1">
+              <ion-icon class="icon-conversation" name="happy"></ion-icon>
+            </ion-col>
+          </ion-row>
+        </ion-col>
+        <ion-col size="1">
+          <ion-icon style="margin-left: 0; font-size: 2em" class="icon-conversation" name="document"></ion-icon>
+        </ion-col>
+      </ion-row>
+    </div>
+
+  </div>
+
+</ion-content>

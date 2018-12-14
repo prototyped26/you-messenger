@@ -1,0 +1,19 @@
+
+<div class="back-color-home" style="padding-left: 0; padding-top: 30px">
+  <ion-searchbar onfocus #search (ionChange)="onSearch($event.target.value)" (ionCancel)="onCloseModal()" showCancelButton animated></ion-searchbar>
+</div>
+
+<ion-content padding >
+  <ion-list style="padding-top: 80px">
+    <ion-item *ngFor="let user of users" (click)="onGoto(user)">
+      <ion-avatar slot="start">
+        <img *ngIf="user.photo === null" src="./../../../assets/icon/avatar.png">
+        <img *ngIf="user.photo !== null" [src]="user.photo">
+      </ion-avatar>
+      <ion-label>
+        <h2>{{user.telephone}}</h2>
+        <h3>{{user.nom + ' ' + (user.prenom ? user.prenom : '')}}</h3>
+      </ion-label>
+    </ion-item>
+  </ion-list>
+</ion-content>

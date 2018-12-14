@@ -1,32 +1,55 @@
-<ion-tabs>
+<div class="back-color-home" style="padding-top: 20px">
+  <ion-row>
+    <ion-col size="9">
+      <h2>
+        You Messenger
+      </h2>
+    </ion-col>
+    <ion-col >
+      <ion-ripple-effect  class="unbounded hydrated" type="unbounded"></ion-ripple-effect>
+      <ion-icon (click)="onOpenSearch()" style="font-size: 30px;padding-top: 17px;" name="search"></ion-icon>
+    </ion-col>
+    <ion-col>
+      <ion-icon style="font-size: 30px;padding-top: 17px;"  name="more"></ion-icon>
+    </ion-col>
+  </ion-row>
+</div>
 
-  <ion-tab tab="tab1">
-    <ion-router-outlet name="tab1"></ion-router-outlet>
-  </ion-tab>
-  <ion-tab tab="tab2">
-    <ion-router-outlet name="tab2"></ion-router-outlet>
-  </ion-tab>
-  <ion-tab tab="tab3">
-    <ion-router-outlet name="tab3"></ion-router-outlet>
-  </ion-tab>
+<ion-content>
+  <ion-tabs style="padding-top: 80px">
 
-  <ion-tab-bar slot="bottom">
+    <ion-tab tab="tab1">
+      <ion-router-outlet name="tab1"></ion-router-outlet>
+    </ion-tab>
+    <ion-tab tab="tab2">
+      <ion-router-outlet name="tab2"></ion-router-outlet>
+    </ion-tab>
+    <ion-tab tab="tab3">
+      <ion-router-outlet name="tab3"></ion-router-outlet>
+    </ion-tab>
 
-    <ion-tab-button tab="tab1" href="/tabs/(tab1:tab1)">
-      <ion-icon name="flash"></ion-icon>
-      <ion-label>Tab One</ion-label>
-    </ion-tab-button>
+    <ion-tab-bar style="
+    -webkit-box-shadow: 1px 5px 15px 2px rgba(0,0,0,0.32);
+    box-shadow: 1px 5px 15px 2px #3880ff63;
+    " slot="top" color="primary">
 
-    <ion-tab-button tab="tab2" href="/tabs/(tab2:tab2)">
-      <ion-icon name="apps"></ion-icon>
-      <ion-label>Tab Two</ion-label>
-    </ion-tab-button>
+      <ion-tab-button tab="tab1" href="/tabs/(tab1:tab1)">
+        <!--ion-icon name="flash"></ion-icon-->
+        <ion-label style="font-weight: bold;font-size: 1.1em;">DISC.</ion-label>
+      </ion-tab-button>
 
-    <ion-tab-button tab="tab3" href="/tabs/(tab3:tab3)">
-      <ion-icon name="send"></ion-icon>
-      <ion-label>Tab Three</ion-label>
-    </ion-tab-button>
+      <ion-tab-button tab="tab2" href="/tabs/(tab2:tab2)">
+        <!--ion-icon name="apps"></ion-icon-->
+        <ion-label style="font-weight: bold;font-size: 1.1em;">ACTUA.</ion-label>
+      </ion-tab-button>
 
-  </ion-tab-bar>
+      <ion-tab-button tab="tab3" href="/tabs/(tab3:tab3)">
+        <!--ion-icon name="send"></ion-icon-->
+        <ion-icon style="font-size: 22px" name="person"></ion-icon>
+      </ion-tab-button>
 
-</ion-tabs>
+    </ion-tab-bar>
+
+  </ion-tabs>
+</ion-content>
+

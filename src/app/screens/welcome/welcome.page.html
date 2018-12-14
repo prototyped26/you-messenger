@@ -1,0 +1,42 @@
+
+<ion-content>
+  <div class='box'>
+    <div class='wave -one'></div>
+    <div class='wave -two'></div>
+    <div class='wave -three'></div>
+    <div class='title'>You <br> Messenger</div>
+  </div>
+
+  <div class="zone-slide">
+    <ion-slides pager="true">
+      <ion-slide>
+
+        <div style="padding: 20px">
+          <h1 class="text-color-home" > <b> Bienvenue <br> sur You Messenger</b> ! </h1>
+          <br>
+          <h4>Votre plateforme de discussion pas comme les autres.</h4>
+          <br><br>
+        </div>
+
+      </ion-slide>
+
+      <ion-slide>
+        <div style="padding-left: 10px; padding-right: 10px">
+          <h1 class="text-color-home" >  <b>Langue que vous parlez ?</b>  </h1>
+          <br>
+          <ion-select (ionChange)="onChangeLanguage($event.target.value)" ok-text="Choisir" cancel-text="Annuler">
+            <ion-select-option *ngFor="let langue of langues" value="{{langue.code}}">{{langue.label }}</ion-select-option>
+          </ion-select>
+          <br>
+          <ion-button (click)="onContinue()" color="primary">
+            Continuer
+            <ion-icon slot="end" name="arrow-round-forward"></ion-icon>
+          </ion-button>
+        </div>
+        <br>
+
+      </ion-slide>
+    </ion-slides>
+
+  </div>
+</ion-content>
