@@ -16,7 +16,7 @@
         </ion-avatar>
       </ion-col>
       <ion-col>
-        <p style="font-weight: bold">
+        <p style="font-weight: bold; margin-top: 10px">
           {{ (toUser ? (toUser.nom === null || toUser.nom === '' ? toUser.telephone : toUser.nom ) : '') }}
         </p>
       </ion-col>
@@ -49,10 +49,13 @@
               <ion-input name="message" [(ngModel)]="message" placeholder="Votre message ... "></ion-input>
             </ion-col>
             <ion-col size="2">
-              <ion-icon (click)="onSendMessage()" class="icon-conversation" name="send"></ion-icon>
+              <ion-icon (click)="onSendMessage()" style="margin-left: 0; font-size: 2em" class="icon-conversation" name="send"></ion-icon>
             </ion-col>
             <ion-col size="1">
-              <ion-icon class="icon-conversation" name="happy"></ion-icon>
+              <!--ion-icon style="margin-left: -15px; font-size: 2em" class="icon-conversation" name="happy"
+                        (click)="toggled = !toggled" [(emojiPickerIf)]="toggled" [emojiPickerDirection]="'top'"
+                        (emojiPickerSelect)="handleSelection($event)"></ion-icon-->
+              <ion-icon style="margin-left: -15px; font-size: 2em" class="icon-conversation" name="happy"></ion-icon>
             </ion-col>
           </ion-row>
         </ion-col>

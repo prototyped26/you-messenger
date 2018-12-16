@@ -15,9 +15,11 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { SocketIoModule, SocketIoConfig } from 'ng-socket-io';
 
 import {CommonModule} from '@angular/common';
+// import {EmojiPickerModule} from '../../node_modules/ionic-emoji-picker/dist/emoji-picker.module';
+import { ListePipe } from './pages/liste.pipe';
 
 //  const ioConf: SocketIoConfig = { url: 'http://localhost:3000', options: {}};
-const ioConf: SocketIoConfig = { url: 'http://192.168.8.104:3000', options: {}};
+const ioConf: SocketIoConfig = { url: 'https://youmessenger237.website', options: {}};
 const firebase = {
     apiKey: 'AIzaSyD6fpPKUn2D8uGp2Gvpw8IYjhB4t91e2po',
     authDomain: 'you-messenger-8c9d9.firebaseapp.com',
@@ -27,7 +29,7 @@ const firebase = {
     messagingSenderId: '1057649044428'
 };
 @NgModule({
-  declarations: [AppComponent, ContactListPage],
+  declarations: [AppComponent, ContactListPage, ListePipe],
   entryComponents: [ContactListPage],
   imports: [
       BrowserModule,
@@ -39,6 +41,7 @@ const firebase = {
       ReactiveFormsModule,
       SocketIoModule.forRoot(ioConf),
       CommonModule,
+      // EmojiPickerModule.forRoot()
   ],
   providers: [
     StatusBar,

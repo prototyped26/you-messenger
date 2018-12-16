@@ -23,6 +23,7 @@ export class ConversationPage implements OnInit, OnDestroy {
   public toUser: User = null;
   public inCommeData: any = null;
   public inComeDataSubscription: Subscription;
+  public toggled = false;
   constructor(private renderer: Renderer2,
               private socket: Socket,
               private route: ActivatedRoute,
@@ -147,7 +148,9 @@ export class ConversationPage implements OnInit, OnDestroy {
   onGoBakc() {
       this.navCtl.goBack();
   }
-
+    handleSelection(event) {
+        this.message += event.char;
+    }
   onSendMessage() {
     if (this.message.length === 0) {
       // error

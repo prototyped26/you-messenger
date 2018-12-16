@@ -5,13 +5,12 @@ import { Routes, RouterModule } from '@angular/router';
 
 import { IonicModule } from '@ionic/angular';
 
-import { ConversationPage } from './conversation.page';
-// import {EmojiPickerModule} from '../../../../node_modules/ionic-emoji-picker/dist/emoji-picker.module';
+import { ListePage } from './liste.page';
 
 const routes: Routes = [
   {
     path: '',
-    component: ConversationPage
+    component: ListePage
   }
 ];
 
@@ -20,9 +19,8 @@ const routes: Routes = [
     CommonModule,
     FormsModule,
     IonicModule,
-    RouterModule.forChild(routes),
-      // EmojiPickerModule
+    RouterModule.forChild(routes)
   ],
-  declarations: [ConversationPage]
+  declarations: [ListePage]
 })
-export class ConversationPageModule {}
+export class ListePageModule {}
