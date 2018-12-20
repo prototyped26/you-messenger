@@ -4,6 +4,8 @@
 </div>
 
 <ion-content padding >
+
+  <ion-spinner style="margin-top: 100px;margin-left: 45%;" *ngIf="loading"></ion-spinner>
   <ion-list style="padding-top: 80px">
     <ion-item *ngFor="let user of users" (click)="onGoto(user)">
       <ion-avatar slot="start">

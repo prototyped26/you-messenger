@@ -14,6 +14,7 @@ export class ContactListPage implements OnInit, OnDestroy {
   @ViewChild(Searchbar) search: Searchbar;
     public users: Array<User> = [];
     public usersData: Array<User> = [];
+    public loading = true;
     public usersSubscription: Subscription;
   constructor(private modalCtrl: ModalController,
               private renderer: Renderer2,
@@ -21,13 +22,14 @@ export class ContactListPage implements OnInit, OnDestroy {
               private router: Router) {
       this.usersSubscription = this.userService.usersSubject.subscribe((u: Array<User>) => {
           this.usersData = u;
-          this.users = this.usersData;
+          this.users = [];
       });
-      this.userService.emitUsers();
   }
 
   ngOnInit() {
-
+      this.userService.otherUsers().then(res => {
+          this.loading = false;
+      });
   }
   ngOnDestroy() {
       this.usersSubscription.unsubscribe();
@@ -43,7 +45,8 @@ export class ContactListPage implements OnInit, OnDestroy {
   onSearch(term: string) {
       this.users = [];
       if (term.length === 0) {
-          this.users = this.usersData;
+          // this.users = this.usersData;
+          this.users = [];
       } else {
           this.usersData.forEach(u => {
               const str = u.nom + ' ' + u.prenom + ' ' + u.telephone;
