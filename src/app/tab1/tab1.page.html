@@ -42,6 +42,9 @@
               : '')
               }}
             </h3>
+            <p *ngIf="discussion.isTyping" style="font-size: 10px; font-weight: bold; color: #00aaff">
+             vous écrit ...
+            </p>
             <p *ngIf="countNotSee(discussion.messages) > 0" style="
               position: absolute;
               right: 0;

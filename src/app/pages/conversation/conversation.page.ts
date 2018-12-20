@@ -9,6 +9,7 @@ import {WhoIAmService} from '../../services/who-i-am.service';
 import {LocalMessageModel} from '../../models/LocalMessage.model';
 import {MessagesService} from '../../services/messages.service';
 import {UtilisateurService} from '../../services/utilisateur.service';
+import {ITypingData} from '../../interfaces/ITypingData.interface';
 
 @Component({
   selector: 'app-conversation',
@@ -18,11 +19,13 @@ import {UtilisateurService} from '../../services/utilisateur.service';
 export class ConversationPage implements OnInit, OnDestroy {
 
   @ViewChild('zone') zone: ElementRef;
-  public message: string = null;
+  public message = '';
   public messages: Array<MessageInfo> = [];
   public toUser: User = null;
   public inCommeData: any = null;
+  public typing = false;
   public inComeDataSubscription: Subscription;
+  public isTypingSubscription: Subscription;
   public toggled = false;
   constructor(private renderer: Renderer2,
               private socket: Socket,
@@ -56,7 +59,9 @@ export class ConversationPage implements OnInit, OnDestroy {
          this.inCommeData = data;
          console.log(data);
           if (data.sender.id + '' === this.toUser.id + '') {
+              this.typing = false;
               if (this.messages.length > 0) {
+                  this.typing = false;
                   if (this.messages[this.messages.length - 1 ].content + '' !== '' + data.message ) {
                       const m: MessageInfo = {
                           id: null, content: '' + data.message, origin: 'you', user: data.sender.id, sender: null, see: true
@@ -66,6 +71,7 @@ export class ConversationPage implements OnInit, OnDestroy {
                       this.scrollToBottom();
                   }
               } else {
+                  this.typing = false;
                   const m: MessageInfo = {
                       id: null, content: '' + data.message, origin: 'you', user: data.sender.id, sender: null, see: false
                   };
@@ -74,6 +80,15 @@ export class ConversationPage implements OnInit, OnDestroy {
                   this.scrollToBottom();
               }
           }
+      });
+      /// si un utilisateur saisie
+      this.isTypingSubscription = this.messageService.isTypingSubject.subscribe((t: ITypingData) => {
+         if (t.you === this.toUser.id) {
+             if (this.typing === false) {
+                 this.typing = true;
+                 setTimeout(() => { this.typing = false; }, 2600);
+             }
+         }
       });
       // this.socket.connect();
       /*this.getMessages().subscribe((data: any) => {
@@ -143,6 +158,7 @@ export class ConversationPage implements OnInit, OnDestroy {
       this.toUser = null;
       this.messageService.emitCurrentUser(null);
       this.inComeDataSubscription.unsubscribe();
+      this.isTypingSubscription.unsubscribe();
   }
 
   onGoBakc() {
@@ -160,19 +176,19 @@ export class ConversationPage implements OnInit, OnDestroy {
       };
       this.message = '';
       this.socket.emit('chat message', m);
+
       this.whoIam.storeListMessagesUser(this.toUser, m);
       this.messages.push(m);
       this.scrollToBottom();
     }
   }
-    getMessages() {
-        /*return new Observable(observer => {
-            this.socket.on('chat message', (data) => {
-                observer.next(data);
-            });
-        });*/
-    }
+
+  onTyping() {
+    const userTyping: ITypingData = { me: this.utilisateurService.user.id, you: this.toUser.id, action: 'typing'};
+    this.socket.emit('user istyping', userTyping);
+  }
     scrollToBottom(): void {
+        this.typing = false;
       // window.scrollTo(0, document.querySelector('.zone').scrollHeight);
         setTimeout(() => {
             document.querySelector('.zone-content').scrollTop = document.querySelector('.zone-content').scrollHeight;

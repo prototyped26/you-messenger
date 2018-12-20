@@ -9,6 +9,8 @@ import {WhoIAmService} from '../services/who-i-am.service';
 import {LocalMessageModel} from '../models/LocalMessage.model';
 import {MessageInfo} from '../models/MessageInfo.interface';
 import {MessagesService} from '../services/messages.service';
+import {ITypingData} from '../interfaces/ITypingData.interface';
+import { Socket } from 'ng-socket-io';
 
 @Component({
   selector: 'app-tab1',
@@ -24,11 +26,13 @@ export class Tab1Page implements OnDestroy, OnInit {
     public discussionsSubscription: Subscription;
     public inCommeData: any = null;
     public inCommeDataSubscription: Subscription;
+    public isTypingSubscription: Subscription;
   constructor(private modalController: ModalController,
               private userService: UtilisateurService,
               private router: Router,
               private whoIam: WhoIAmService,
-              private messageService: MessagesService) {
+              private messageService: MessagesService,
+              private socket: Socket) {
       this.usersSubscription = this.userService.usersSubject.subscribe((u: Array<User>) => {
           this.users = u;
       });
@@ -93,12 +97,35 @@ export class Tab1Page implements OnDestroy, OnInit {
                 // console.log(l);
             }
         });
+        // est entrain de vous écrire
+        this.isTypingSubscription = this.messageService.isTypingSubject.subscribe((t: ITypingData) => {
+            // console.log(t);
+            if (this.discussions !== null) {
+                if (this.discussions.length > 0) {
+                    const index = this.discussions.findIndex(l => l.user.id + '' === '' + t.you);
+                    // console.log(index);
+                    if (index >= 0) {
+                        // console.log(this.discussions[index].isTyping);
+                        if (this.discussions[index].isTyping === false) {
+                            this.discussions[index].isTyping = true;
+                            setTimeout(() => { this.discussions[index].isTyping = false; }, 2400);
+                        }
+
+                        if (typeof  this.discussions[index].isTyping === 'undefined') {
+                            this.discussions[index].isTyping = true;
+                            setTimeout(() => { this.discussions[index].isTyping = false; }, 2400);
+                        }
+                    }
+                }
+            }
+        });
       // this.router.navigate(['/conversation']);
       this.userService.otherUsers().then(res => {});
     }
     ngOnDestroy() {
       this.usersSubscription.unsubscribe();
       this.inCommeDataSubscription.unsubscribe();
+      this.isTypingSubscription.unsubscribe();
     }
     onGoto(u: User) {
         const navigationExtras: NavigationExtras = {

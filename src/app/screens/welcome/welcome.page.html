@@ -22,9 +22,11 @@
 
       <ion-slide>
         <div style="padding-left: 10px; padding-right: 10px">
-          <h1 class="text-color-home" >  <b>Langue que vous parlez ?</b>  </h1>
+          <h1 class="text-color-home" >  <b>Langue que vous parlez ? </b>  </h1>
           <br>
-          <ion-select (ionChange)="onChangeLanguage($event.target.value)" ok-text="Choisir" cancel-text="Annuler">
+
+          <ion-spinner *ngIf="langues.length === 0"></ion-spinner>
+          <ion-select *ngIf="langues.length !== 0" (ionChange)="onChangeLanguage($event.target.value)" ok-text="Choisir" cancel-text="Annuler">
             <ion-select-option *ngFor="let langue of langues" value="{{langue.code}}">{{langue.label }}</ion-select-option>
           </ion-select>
           <br>

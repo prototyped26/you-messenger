@@ -26,45 +26,36 @@
 
      <div class="conversation-message zone-content">
        <div #zone class="content zone">
-         <!--div class="bubble you">
-           I'm in California dreaming
-         </div>
-         <div class="bubble me">
-           ... about who we used to be.
-         </div>
-         <div class="bubble me">
-           Are you serious?
-         </div -->
          <div *ngFor="let msg of messages" class="bubble" [ngClass]="{'me': msg.origin === 'me', 'you': msg.origin === 'you'}">
            {{ msg.content }}
          </div>
+         <div *ngIf="typing"  class="bubble you">
+           <img style="width: 20px" src="./../../../assets/icon/Ball-1s-200px.gif" alt="">
+         </div>
        </div>
      </div>
-
-    <div class="input-conversation">
-      <ion-row>
-        <ion-col size="11" class="input-emoji">
-          <ion-row>
-            <ion-col size="9">
-              <ion-input name="message" [(ngModel)]="message" placeholder="Votre message ... "></ion-input>
-            </ion-col>
-            <ion-col size="2">
-              <ion-icon (click)="onSendMessage()" style="margin-left: 0; font-size: 2em" class="icon-conversation" name="send"></ion-icon>
-            </ion-col>
-            <ion-col size="1">
-              <!--ion-icon style="margin-left: -15px; font-size: 2em" class="icon-conversation" name="happy"
-                        (click)="toggled = !toggled" [(emojiPickerIf)]="toggled" [emojiPickerDirection]="'top'"
-                        (emojiPickerSelect)="handleSelection($event)"></ion-icon-->
-              <ion-icon style="margin-left: -15px; font-size: 2em" class="icon-conversation" name="happy"></ion-icon>
-            </ion-col>
-          </ion-row>
-        </ion-col>
-        <ion-col size="1">
-          <ion-icon style="margin-left: 0; font-size: 2em" class="icon-conversation" name="document"></ion-icon>
-        </ion-col>
-      </ion-row>
-    </div>
-
   </div>
 
 </ion-content>
+
+<ion-footer>
+  <ion-toolbar>
+    <ion-row>
+      <ion-col size="1">
+        <ion-ripple-effect></ion-ripple-effect>
+        <ion-icon style="margin-left: -5px; font-size: 2em" class="icon-conversation" name="happy"></ion-icon>
+      </ion-col>
+      <ion-col size="10">
+        <ion-input (ionChange)="onTyping()" style="margin-top: 5px;" name="message" [(ngModel)]="message" placeholder="Votre message ... "></ion-input>
+      </ion-col>
+      <ion-col *ngIf="message.length !== 0" (click)="onSendMessage()" size="1">
+        <ion-ripple-effect></ion-ripple-effect>
+        <ion-icon  style="margin-left: -4px; font-size: 2em" class="icon-conversation" name="send"></ion-icon>
+      </ion-col>
+      <ion-col *ngIf="message.length === 0" size="1">
+        <ion-ripple-effect></ion-ripple-effect>
+        <ion-icon style="margin-left: -4px; font-size: 2em" class="icon-conversation" name="attach"></ion-icon>
+      </ion-col>
+    </ion-row>
+  </ion-toolbar>
+</ion-footer>

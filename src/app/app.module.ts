@@ -17,9 +17,11 @@ import { SocketIoModule, SocketIoConfig } from 'ng-socket-io';
 import {CommonModule} from '@angular/common';
 // import {EmojiPickerModule} from '../../node_modules/ionic-emoji-picker/dist/emoji-picker.module';
 import { ListePipe } from './pages/liste.pipe';
+import {Keyboard} from '@ionic-native/keyboard/ngx';
+// import {LocalNotifications} from '@ionic-native/local-notifications';
 
-//  const ioConf: SocketIoConfig = { url: 'http://localhost:3000', options: {}};
-const ioConf: SocketIoConfig = { url: 'https://youmessenger237.website', options: {}};
+const ioConf: SocketIoConfig = { url: 'http://192.168.43.97:3000', options: {}};
+// const ioConf: SocketIoConfig = { url: 'https://youmessenger237.website', options: {}};
 const firebase = {
     apiKey: 'AIzaSyD6fpPKUn2D8uGp2Gvpw8IYjhB4t91e2po',
     authDomain: 'you-messenger-8c9d9.firebaseapp.com',
@@ -33,7 +35,7 @@ const firebase = {
   entryComponents: [ContactListPage],
   imports: [
       BrowserModule,
-      IonicModule.forRoot(),
+      IonicModule.forRoot({ scrollAssist: true, rippleEffect: true}),
       AppRoutingModule,
       IonicStorageModule.forRoot(),
       HttpClientModule,
@@ -42,10 +44,12 @@ const firebase = {
       SocketIoModule.forRoot(ioConf),
       CommonModule,
       // EmojiPickerModule.forRoot()
+      //  LocalNotifications
   ],
   providers: [
     StatusBar,
     SplashScreen,
+      Keyboard,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
   ],
   bootstrap: [AppComponent]
