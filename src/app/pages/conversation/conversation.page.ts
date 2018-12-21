@@ -22,11 +22,13 @@ export class ConversationPage implements OnInit, OnDestroy {
   public message = '';
   public messages: Array<MessageInfo> = [];
   public toUser: User = null;
+  public toUserIsConnected = false;
   public inCommeData: any = null;
   public typing = false;
   public inComeDataSubscription: Subscription;
   public isTypingSubscription: Subscription;
-  public toggled = false;
+  public toggled = true;
+  public intervalToUserOnline: any;
   constructor(private renderer: Renderer2,
               private socket: Socket,
               private route: ActivatedRoute,
@@ -40,6 +42,18 @@ export class ConversationPage implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+     this.intervalToUserOnline = setInterval(() => {
+          if (this.toUserIsConnected === false) {
+              this.getifToUserIsConnected();
+          }
+      }, 500);
+
+      this.setIfToUserIsConnecter().subscribe((data: any) => {
+          console.log(data);
+          if (data.res === true) {
+              this.toUserIsConnected = true;
+          }
+      });
       // get user contanct info
       this.route.queryParams.subscribe(params => {
           this.toUser = JSON.parse(params['user']);
@@ -83,9 +97,11 @@ export class ConversationPage implements OnInit, OnDestroy {
       });
       /// si un utilisateur saisie
       this.isTypingSubscription = this.messageService.isTypingSubject.subscribe((t: ITypingData) => {
-         if (t.you === this.toUser.id) {
+          // console.log(t);
+         if (t.you + '' === '' + this.toUser.id) {
              if (this.typing === false) {
-                 this.typing = true;
+                this.typing = true;
+                 // this.scrollToBottom();
                  setTimeout(() => { this.typing = false; }, 2600);
              }
          }
@@ -154,6 +170,7 @@ export class ConversationPage implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
+      clearInterval(this.intervalToUserOnline);
       // this.inCome.unsubscribe();
       this.toUser = null;
       this.messageService.emitCurrentUser(null);
@@ -164,9 +181,7 @@ export class ConversationPage implements OnInit, OnDestroy {
   onGoBakc() {
       this.navCtl.goBack();
   }
-    handleSelection(event) {
-        this.message += event.char;
-    }
+
   onSendMessage() {
     if (this.message.length === 0) {
       // error
@@ -181,6 +196,21 @@ export class ConversationPage implements OnInit, OnDestroy {
       this.messages.push(m);
       this.scrollToBottom();
     }
+  }
+
+  getifToUserIsConnected() {
+      if (this.toUser !== null) {
+          const m = { user: this.toUser.id };
+          this.socket.emit('user is connected', m);
+      }
+  }
+
+  setIfToUserIsConnecter() {
+      return new Observable(observer => {
+          this.socket.on('user is connected', (data) => {
+              observer.next(data);
+          });
+      });
   }
 
   onTyping() {

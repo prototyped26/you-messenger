@@ -18,6 +18,12 @@
       <ion-col>
         <p style="font-weight: bold; margin-top: 10px">
           {{ (toUser ? (toUser.nom === null || toUser.nom === '' ? toUser.telephone : toUser.nom ) : '') }}
+
+          <ion-badge *ngIf="toUserIsConnected" style="margin-left: 8px" color="success">c</ion-badge>
+
+          <span style="margin-left: 10px"  *ngIf="typing">
+             <img style="width: 20px" src="./../../../assets/icon/Ball-1s-200px.gif" alt="">
+          </span>
         </p>
       </ion-col>
     </ion-row>
@@ -29,9 +35,11 @@
          <div *ngFor="let msg of messages" class="bubble" [ngClass]="{'me': msg.origin === 'me', 'you': msg.origin === 'you'}">
            {{ msg.content }}
          </div>
-         <div *ngIf="typing"  class="bubble you">
+         <!--
+         <div [ngStyle]="{'display': (typing === false ? 'none': 'block' )}"  class="bubble you" >
            <img style="width: 20px" src="./../../../assets/icon/Ball-1s-200px.gif" alt="">
          </div>
+         -->
        </div>
      </div>
   </div>
