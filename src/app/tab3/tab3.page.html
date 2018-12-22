@@ -7,20 +7,31 @@
     </div>
 
     <div *ngIf="user !== null">
-        <ion-grid style="margin-top: 8%">
+        <ion-grid style="margin-top: 4%">
             <ion-row>
                 <ion-col></ion-col>
                 <ion-col size="8">
-                    <img href="#" style="margin-left: 25%;" src="./../../assets/icon/avatar.png">
-
-                    <div style="width: 50px;
-                            position: absolute;
-                            top: 0;
-                            margin-left: 65%;
-                            margin-top: 35%;">
-                        <ion-item (click)="presentActionSheet()" href="javascript:void(0)">
-                            <ion-icon style="font-size: 1.2em" name="camera"></ion-icon>
-                        </ion-item>
+                    <div style="width: 126px; margin: auto">
+                        <ion-avatar style="width: 125px;height: 125px;">
+                            <img href="#" *ngIf="user.photo === null" style=" width: 200px" src="./../../assets/icon/avatar.png">
+                            <img href="#" *ngIf="user.photo !== null" style="" [src]="user.photo">
+                        </ion-avatar>
+                        <div *ngIf="load" style="width: 120px; margin: auto;top: 0;margin-left: 4px;position: absolute;">
+                            <img  style="left: 0;
+                                top: 0;
+                                width: 120px;
+                                " src="./../../assets/icon/Spinner-1s-200px.gif" alt="">
+                        </div>
+                    </div>
+                    <br>
+                    <div style="width: 50px; margin: auto">
+                        <div ion-activatable (click)="presentActionSheet()" style="width: 45px; background: #3880ff; height: 45px; border-radius: 45px;">
+                            <ion-ripple-effect role="presentation"></ion-ripple-effect>
+                            <ion-icon style="font-size: 1.2em;font-size: 1.2em;
+                                            margin-left: 28%;
+                                            margin-top: 25%;
+                                            color: white;" name="camera"></ion-icon>
+                        </div>
                     </div>
 
                 </ion-col>

@@ -18,6 +18,9 @@ import {CommonModule} from '@angular/common';
 // import {EmojiPickerModule} from '../../node_modules/ionic-emoji-picker/dist/emoji-picker.module';
 import { ListePipe } from './pages/liste.pipe';
 import {Keyboard} from '@ionic-native/keyboard/ngx';
+import {ImagePicker} from '@ionic-native/image-picker/ngx';
+import { Camera } from '@ionic-native/camera/ngx';
+
 // import {LocalNotifications} from '@ionic-native/local-notifications';
 
 const ioConf: SocketIoConfig = { url: 'http://192.168.43.97:3000', options: {}};
@@ -50,6 +53,8 @@ const firebase = {
     StatusBar,
     SplashScreen,
       Keyboard,
+      ImagePicker,
+      Camera,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
   ],
   bootstrap: [AppComponent]

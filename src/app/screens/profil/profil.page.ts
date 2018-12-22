@@ -40,6 +40,7 @@ export class ProfilPage implements OnInit, OnDestroy {
 
   ngOnInit() {
   }
+  ngOnDestroy() {}
   onChangeLanguage(val) {
         const index = this.langues.findIndex(l => l.code + '' === val + '');
         // console.log(index);
