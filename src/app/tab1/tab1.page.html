@@ -45,12 +45,21 @@
             <p *ngIf="discussion.isTyping" style="font-size: 10px; font-weight: bold; color: #00aaff">
              vous écrit ...
             </p>
-            <p *ngIf="countNotSee(discussion.messages) > 0" style="
+            <p style="
               position: absolute;
               right: 0;
               top: 0;
               margin-top: 12px;">
-              <ion-badge color="secondary"> {{ countNotSee(discussion.messages) }} </ion-badge>
+              <ion-badge *ngIf="countNotSee(discussion.messages) > 0" color="secondary"> {{ countNotSee(discussion.messages) }} </ion-badge>
+            </p>
+            <p class="" style="
+              position: absolute;
+              right: 0;
+              top: 0;
+              font-size: 9px;
+              font-weight: 500;
+              margin-top: 34px;" [ngStyle]="{'color': (countNotSee(discussion.messages) > 0 ? '#0cd1e8' : '#202020')}">
+              {{ getDateFomat(discussion.lastMessage) }}
             </p>
           </ion-label>
         </ion-item>

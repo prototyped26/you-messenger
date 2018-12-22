@@ -101,4 +101,19 @@ export class UtilisateurService {
               });
       });
   }
+    updateUser(u: User) {
+        return new Promise((resolve) => {
+            this.apiMethod.POST('' + this.apiInfo.endPoint + 'users/update', u, true)
+                .then((res: any) => {
+                    if (res) {
+                        resolve(true);
+                    } else {
+                        resolve(false);
+                    }
+                })
+                .catch(err => {
+                    resolve(false);
+                });
+        });
+    }
 }

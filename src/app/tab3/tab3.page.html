@@ -1,9 +1,53 @@
-<!--ion-header>
-  <ion-toolbar>
-    <ion-title>
-      Tab Three
-    </ion-title>
-  </ion-toolbar>
-</ion-header-->
+<ion-content  padding="">
 
-<ion-content></ion-content>
+    <div *ngIf="user === null">
+        <ion-grid style="margin-top: 8%">
+            <ion-spinner style="margin-left: 45%" ></ion-spinner>
+        </ion-grid>
+    </div>
+
+    <div *ngIf="user !== null">
+        <ion-grid style="margin-top: 8%">
+            <ion-row>
+                <ion-col></ion-col>
+                <ion-col size="8">
+                    <img href="#" style="margin-left: 25%;" src="./../../assets/icon/avatar.png">
+
+                    <div style="width: 50px;
+                            position: absolute;
+                            top: 0;
+                            margin-left: 65%;
+                            margin-top: 35%;">
+                        <ion-item (click)="presentActionSheet()" href="javascript:void(0)">
+                            <ion-icon style="font-size: 1.2em" name="camera"></ion-icon>
+                        </ion-item>
+                    </div>
+
+                </ion-col>
+                <ion-col></ion-col>
+            </ion-row>
+
+            <ion-card>
+                <ion-card-header>
+                    <ion-card-title>Nom : {{ user.nom }} </ion-card-title>
+                </ion-card-header>
+                <ion-card-content>
+                    <p>Prénom : {{ user.prenom }} </p>
+                    <hr>
+                    <p>Langue : <b> {{ user.langue.label }} </b> </p>
+                    <p>Téléphone : <b> {{ user.telephone }} </b> </p>
+                    <br><br>
+
+                    <ion-button (click)="onGoToModified()" size="small" style="margin-left: 5%"> Modifier les informations </ion-button>
+
+                </ion-card-content>
+            </ion-card>
+
+            <br>
+
+            <ion-button expand="full" color="danger" size="small"> SUPPRIMER MON COMPTE </ion-button>
+        </ion-grid>
+    </div>
+
+
+</ion-content>

@@ -1,0 +1,46 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title>Modification</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content padding>
+
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Modification de vos données personnelle </ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-item>
+        <ion-label position="floating">Nom</ion-label>
+        <ion-input [(ngModel)]="user.nom" ></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="floating">Prènom</ion-label>
+        <ion-input [(ngModel)]="user.prenom"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="floating">votre pseudo </ion-label>
+        <ion-input [(ngModel)]="user.pseudo"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label  position="floating">Téléphone</ion-label>
+        <ion-input [(ngModel)]="user.telephone" disabled></ion-input>
+      </ion-item>
+      <ion-spinner *ngIf="langues.length === 0"></ion-spinner>
+      <ion-item>
+        <ion-label  position="floating">Langue</ion-label>
+        <ion-select [value]="user.langue.code"  *ngIf="langues.length !== 0" (ionChange)="onChangeLanguage($event.target.value)" ok-text="Choisir" cancel-text="Annuler">
+          <ion-select-option *ngFor="let langue of langues" value="{{langue.code}}">{{langue.label }}</ion-select-option>
+        </ion-select>
+      </ion-item>
+      <br>
+
+      <ion-button (click)="onContinue()" expand="full" size="small" style="margin-left: 5%"> Appliquer </ion-button>
+
+    </ion-card-content>
+  </ion-card>
+</ion-content>

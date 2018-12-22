@@ -54,7 +54,8 @@
         <ion-icon style="margin-left: -5px; font-size: 2em" class="icon-conversation" name="happy"></ion-icon>
       </ion-col>
       <ion-col size="10">
-        <ion-input (ionChange)="onTyping()" style="margin-top: 5px;" name="message" [(ngModel)]="message" placeholder="Votre message ... "></ion-input>
+        <ion-textarea (ionChange)="onTyping()" style="margin-top: 5px;" name="message" [(ngModel)]="message" placeholder="Votre message ... "></ion-textarea>
+        <!-- ion-input (ionChange)="onTyping()" style="margin-top: 5px;" name="message" [(ngModel)]="message" placeholder="Votre message ... "></ion-input -->
       </ion-col>
       <ion-col *ngIf="message.length !== 0" (click)="onSendMessage()" size="1">
         <ion-ripple-effect></ion-ripple-effect>

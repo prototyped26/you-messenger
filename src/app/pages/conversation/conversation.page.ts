@@ -10,6 +10,7 @@ import {LocalMessageModel} from '../../models/LocalMessage.model';
 import {MessagesService} from '../../services/messages.service';
 import {UtilisateurService} from '../../services/utilisateur.service';
 import {ITypingData} from '../../interfaces/ITypingData.interface';
+import * as momentJS from 'moment';
 
 @Component({
   selector: 'app-conversation',
@@ -192,7 +193,7 @@ export class ConversationPage implements OnInit, OnDestroy {
       this.message = '';
       this.socket.emit('chat message', m);
 
-      this.whoIam.storeListMessagesUser(this.toUser, m);
+      this.whoIam.storeListMessagesUser(this.toUser, m, momentJS(Date.now()).format('YYYY-MM-DD HH:mm:ss') );
       this.messages.push(m);
       this.scrollToBottom();
     }

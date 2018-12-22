@@ -2,7 +2,7 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {ContactListPage} from '../screens/contact-list/contact-list.page';
 import {ModalController} from '@ionic/angular';
 import {User} from '../models/User.model';
-import {Subscription} from 'rxjs';
+import {Observable, Subscription} from 'rxjs';
 import {UtilisateurService} from '../services/utilisateur.service';
 import {NavigationExtras, Router} from '@angular/router';
 import {WhoIAmService} from '../services/who-i-am.service';
@@ -11,6 +11,7 @@ import {MessageInfo} from '../models/MessageInfo.interface';
 import {MessagesService} from '../services/messages.service';
 import {ITypingData} from '../interfaces/ITypingData.interface';
 import { Socket } from 'ng-socket-io';
+import * as momentJS from 'moment';
 
 @Component({
   selector: 'app-tab1',
@@ -33,6 +34,7 @@ export class Tab1Page implements OnDestroy, OnInit {
               private whoIam: WhoIAmService,
               private messageService: MessagesService,
               private socket: Socket) {
+      momentJS.locale('fr');
       this.usersSubscription = this.userService.usersSubject.subscribe((u: Array<User>) => {
           this.users = u;
       });
@@ -43,43 +45,13 @@ export class Tab1Page implements OnDestroy, OnInit {
           this.discussions = l;
       });
       this.inCommeDataSubscription = this.messageService.inCommingMessageSubject.subscribe((data: any) => {
+          console.log(data);
           if (this.userConverse === null) {
-              this.inCommeData = data;
-              console.log('Pas de user en cours ... !');
-              let listesLocales: Array<LocalMessageModel> = [];
-              this.whoIam.getListMessagesUser().then((l: Array<LocalMessageModel>) => {
-                  listesLocales = l;
+              this.setDataIncomeSystem(data).then(res => {
+                  this.whoIam.getListMessagesUser().then((l: Array<LocalMessageModel>) => {
+                      this.discussions = l;
+                  });
               });
-              setTimeout(() => {
-                  console.log(listesLocales);
-                  let trouveUser = false;
-                  if (listesLocales !== null) {
-                      if (listesLocales.length > 0) {
-                          const index = listesLocales.findIndex(l => l.user.id + '' === '' + data.sender.id);
-                          console.log(index);
-                          if (index >= 0) {
-                              const m: MessageInfo = {
-                                  id: null, content: '' + data.message, origin: 'you', user: data.sender.id, sender: null, see: false
-                              };
-                              // listesLocales[index].messages.push(m);
-                              trouveUser = true;
-                              this.whoIam.storeListMessagesUser(listesLocales[index].user, m);
-                          }
-                      }
-                  }
-                  // si l'utilisateur n'existe pas on ajoute de new
-                  setTimeout(() => {
-                      if (!trouveUser) {
-                          let u: User = new User();
-                          u = data.sender;
-                          const m: MessageInfo = {
-                              id: null, content: '' + data.message, origin: 'you', user: data.sender.id, sender: null, see: false
-                          };
-                          console.log(m);
-                          this.whoIam.storeListMessagesUser(u, m);
-                      }
-                  }, 200);
-              }, 200);
           }
       });
   }
@@ -94,8 +66,17 @@ export class Tab1Page implements OnDestroy, OnInit {
         this.whoIam.getListMessagesUser().then((l: Array<LocalMessageModel>) => {
             if (l !== null) {
                 this.discussions = l;
-                // console.log(l);
             }
+        });
+        // event de première connexion
+        this.getAllMessagesOnConnect().subscribe((d: any) => {
+            // console.log(d);
+            const stacks: Array<boolean> = [];
+            const listData: Array<any> = JSON.parse(d);
+            // console.log(listData);
+            setTimeout(() => {
+                this.onSaveListData(JSON.parse(d), 0, listData.length, 0);
+            }, 240);
         });
         // est entrain de vous écrire
         this.isTypingSubscription = this.messageService.isTypingSubject.subscribe((t: ITypingData) => {
@@ -148,5 +129,72 @@ export class Tab1Page implements OnDestroy, OnInit {
           }
       }
         return val;
+    }
+    getAllMessagesOnConnect() {
+        return new Observable(observer => {
+            this.socket.on('chat messages all', (data) => {
+                // console.log(data);
+                observer.next(data);
+            });
+        });
+    }
+
+    setDataIncomeSystem(data: any) {
+        // console.log('Pas de user en cours ... ');
+        // let listesLocales: Array<LocalMessageModel> = [];
+      return new Promise((resolve, reject) => {
+          this.inCommeData = data;
+          this.whoIam.getListMessagesUser().then((listesLocales: Array<LocalMessageModel>) => {
+              // listesLocales = l;
+              let trouveUser = false;
+              if (listesLocales !== null) {
+                  if (listesLocales.length > 0) {
+                      const index = listesLocales.findIndex(l => l.user.id + '' === '' + data.sender.id);
+                      // console.log(index);
+                      if (index >= 0) {
+                          const m: MessageInfo = {
+                              id: null, content: '' + data.message, origin: 'you', user: data.sender.id, sender: null, see: false
+                          };
+                          // listesLocales[index].messages.push(m) ;
+                          trouveUser = true;
+                          this.whoIam.storeListMessagesUser(listesLocales[index].user, m, data.date).then(res => {
+                              resolve(true);
+                          });
+                      }
+                  }
+              }
+              // si l'utilisateur n'existe pas on ajoute de new
+              setTimeout(() => {
+                  if (!trouveUser) {
+                      let u: User = new User();
+                      u = data.sender;
+                      const m: MessageInfo = {
+                          id: null, content: '' + data.message, origin: 'you', user: data.sender.id, sender: null, see: false
+                      };
+                      // console.log(m);
+                      this.whoIam.storeListMessagesUser(u, m, data.date).then(res => {
+                          resolve(true);
+                      });
+                  }
+              }, 200);
+          });
+      });
+    }
+
+    onSaveListData(list: Array<any>, start: number, end: number, indice: number) {
+      if (indice < end) {
+          this.setDataIncomeSystem(list[indice]).then((res: boolean) => {
+              indice++;
+              this.onSaveListData(list, start, end, indice);
+          });
+      } else {
+          this.whoIam.getListMessagesUser().then((l: Array<LocalMessageModel>) => {
+              this.discussions = l;
+          });
+      }
+    }
+
+    getDateFomat(date: Date) {
+      return momentJS(date).calendar();
     }
 }
