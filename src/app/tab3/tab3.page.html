@@ -40,23 +40,23 @@
 
             <ion-card>
                 <ion-card-header>
-                    <ion-card-title>Nom : {{ user.nom }} </ion-card-title>
+                    <ion-card-title> {{ 'NOM' | translate }} : {{ user.nom }} </ion-card-title>
                 </ion-card-header>
                 <ion-card-content>
-                    <p>Prénom : {{ user.prenom }} </p>
+                    <p> {{ 'PRENOM' | translate }} : {{ user.prenom }} </p>
                     <hr>
-                    <p>Langue : <b> {{ user.langue.label }} </b> </p>
-                    <p>Téléphone : <b> {{ user.telephone }} </b> </p>
+                    <p> {{ 'LANGUE' | translate }} : <b> {{ user.langue.label }} </b> </p>
+                    <p> {{ 'TELEPHONE' | translate }} : <b> {{ user.telephone }} </b> </p>
                     <br><br>
 
-                    <ion-button (click)="onGoToModified()" size="small" style="margin-left: 5%"> Modifier les informations </ion-button>
+                    <ion-button (click)="onGoToModified()" size="small" expand="full"> {{ 'MODIFIER INFORMATIONS' | translate }} </ion-button>
 
                 </ion-card-content>
             </ion-card>
 
             <br>
 
-            <ion-button expand="full" color="danger" size="small"> SUPPRIMER MON COMPTE </ion-button>
+            <ion-button expand="full" color="danger" size="small"> {{ 'SUPPRIMER COMPTE' | translate }} </ion-button>
         </ion-grid>
     </div>
 

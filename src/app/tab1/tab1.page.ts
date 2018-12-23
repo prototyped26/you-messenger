@@ -12,6 +12,7 @@ import {MessagesService} from '../services/messages.service';
 import {ITypingData} from '../interfaces/ITypingData.interface';
 import { Socket } from 'ng-socket-io';
 import * as momentJS from 'moment';
+import {TranslateService} from '@ngx-translate/core';
 
 @Component({
   selector: 'app-tab1',
@@ -33,7 +34,8 @@ export class Tab1Page implements OnDestroy, OnInit {
               private router: Router,
               private whoIam: WhoIAmService,
               private messageService: MessagesService,
-              private socket: Socket) {
+              private socket: Socket,
+              private translate: TranslateService) {
       momentJS.locale('fr');
       this.usersSubscription = this.userService.usersSubject.subscribe((u: Array<User>) => {
           this.users = u;
@@ -63,6 +65,13 @@ export class Tab1Page implements OnDestroy, OnInit {
         return await modal.present();
     }
     ngOnInit() {
+        this.whoIam.getUserInfo().then((u: User) => {
+            if (u.langue.code !== 'fr') {
+                this.translate.use('en');
+            } else {
+                this.translate.use('fr');
+            }
+        });
         this.whoIam.getListMessagesUser().then((l: Array<LocalMessageModel>) => {
             if (l !== null) {
                 this.discussions = l;

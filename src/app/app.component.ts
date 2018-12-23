@@ -6,10 +6,15 @@ import {WhoIAmService} from './services/who-i-am.service';
 import {UtilisateurService} from './services/utilisateur.service';
 // import {User} from './models/User.model';
 import { Socket } from 'ng-socket-io';
-import {LocalNotifications} from '@ionic-native/local-notifications';
+// import {LocalNotifications} from '@ionic-native/local-notifications/ngx';
 import {Keyboard} from '@ionic-native/keyboard/ngx';
 import {Observable} from 'rxjs';
 import {MessagesService} from './services/messages.service';
+import { ToastController } from '@ionic/angular';
+import {FcmService} from './services/fcm.service';
+import {TranslateService} from '@ngx-translate/core';
+// import {MessageInfo} from './models/MessageInfo.interface';
+// import {User} from './models/User.model';
 
 @Component({
   selector: 'app-root',
@@ -24,10 +29,15 @@ export class AppComponent {
     private userService: UtilisateurService,
     private socket: Socket,
     private keyboard: Keyboard,
-    private messageService: MessagesService
+    private messageService: MessagesService,
+    private fcm: FcmService,
+    private toastController: ToastController,
+    private translate: TranslateService
   ) {
     this.initializeApp();
       this.statusBar.overlaysWebView(true);
+
+      this.translate.setDefaultLang('fr');
 
       this.keyboard.onKeyboardShow().subscribe((k: any) => {
         console.log(k.keyboardHeight);
@@ -49,7 +59,8 @@ export class AppComponent {
       // this.statusBar.styleDefault();
         this.statusBar.backgroundColorByHexString('#0074D9');
         this.statusBar.styleLightContent();
-      this.splashScreen.hide();
+        this.splashScreen.hide();
+        this.notificationSetup();
     });
     /*this.whoIam.getToken().then((val: string) => {
       if (val !== null) {
@@ -70,5 +81,25 @@ export class AppComponent {
                 observer.next(data);
             });
         });
+    }
+
+    private async presentToast(message) {
+        const toast = await this.toastController.create({
+            message,
+            duration: 3000
+        });
+        toast.present();
+    }
+
+    private notificationSetup() {
+        this.fcm.getToken();
+        this.fcm.onNotifications().subscribe(
+            (msg) => {
+                if (this.platform.is('ios')) {
+                    this.presentToast(msg.aps.alert);
+                } else {
+                    this.presentToast(msg.body);
+                }
+            });
     }
 }

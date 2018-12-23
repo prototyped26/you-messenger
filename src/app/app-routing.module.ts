@@ -8,7 +8,8 @@ const routes: Routes = [
   { path: 'sign-in', loadChildren: './screens/sign-in/sign-in.module#SignInPageModule' },
   { path: 'contact-list', loadChildren: './screens/contact-list/contact-list.module#ContactListPageModule' },
   { path: 'conversation', canActivate: [TokenGuard], loadChildren: './pages/conversation/conversation.module#ConversationPageModule' },
-  { path: 'liste', loadChildren: './pages/liste/liste.module#ListePageModule' },  { path: 'profil', loadChildren: './screens/profil/profil.module#ProfilPageModule' }
+  { path: 'liste', loadChildren: './pages/liste/liste.module#ListePageModule' },
+  { path: 'profil', loadChildren: './screens/profil/profil.module#ProfilPageModule' }
 
 ];
 @NgModule({

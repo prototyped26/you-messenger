@@ -6,7 +6,7 @@
           <div class='wave -two'></div>
           <div class='wave -three'></div>
           <div class='title'>
-              Inscrivez-vous
+              {{ 'Inscrivez-vous' | translate }}
           </div>
       </div>
 
@@ -22,21 +22,21 @@
                   <ion-col></ion-col>
               </ion-row>
           </ion-grid>
-          <form >
+          <form padding>
               <ion-list>
                   <ion-item>
-                      <ion-label class="text-color-home" position="floating">Numéro de téléphone</ion-label>
+                      <ion-label class="text-color-home" position="floating"> {{ 'Numéro de téléphone' | translate }} </ion-label>
                       <ion-input name="telephone" [(ngModel)]="telephone" type="number" placeholder="6 95 ** ** **"></ion-input>
                   </ion-item>
                   <br>
                   <ion-item>
-                      <ion-label class="text-color-home" position="floating">Nom</ion-label>
+                      <ion-label class="text-color-home" position="floating">{{ 'Nom' | translate }}</ion-label>
                       <ion-input name="nom" [(ngModel)]="nom" type="text" placeholder="John Doh"></ion-input>
                   </ion-item>
 
                   <br><br>
                   <ion-button (click)="onConitnue()" expand="full" color="primary">
-                      Continuer
+                      {{ 'Continuer' | translate }}
                       <ion-icon slot="end" name="arrow-round-forward"></ion-icon>
                   </ion-button>
               </ion-list>

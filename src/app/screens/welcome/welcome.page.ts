@@ -6,6 +6,7 @@ import {LoadingController, ToastController} from '@ionic/angular';
 import {Router} from '@angular/router';
 import {WhoIAmService} from '../../services/who-i-am.service';
 import {User} from '../../models/User.model';
+import {TranslateService} from '@ngx-translate/core';
 
 @Component({
   selector: 'app-welcome',
@@ -22,7 +23,8 @@ export class WelcomePage implements OnInit, OnDestroy {
               private loadingCtrl: LoadingController,
               private router: Router,
               private whoIam: WhoIAmService,
-              private toastCtrl: ToastController) {
+              private toastCtrl: ToastController,
+              private translate: TranslateService) {
     this.languesService.languesSubject.subscribe((l: Array<Langue>) => {
       this.langues = l;
     });
@@ -52,6 +54,9 @@ export class WelcomePage implements OnInit, OnDestroy {
                 user = u;
             }
             user.langue = this.langue;
+            if (this.langue.code !== 'fr') {
+                this.translate.use('en');
+            }
             this.whoIam.storeUserInfo(user).then(res => {
               this.loadingCtrl.dismiss();
               if (res) {

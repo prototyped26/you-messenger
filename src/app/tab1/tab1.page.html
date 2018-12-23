@@ -19,7 +19,7 @@
         <img style="margin: auto;filter: blur(1px);opacity: .2;" src="./../../assets/icon/teamwork_512.png" alt="">
         <br>
         <p class="text-color-home" style="text-align: center;opacity: .2;font-size: 1.2rem;font-weight: bold;">
-          Lancer une discussion
+          {{ 'LANCER DISCUSSION' | translate }}
         </p>
       </ion-col>
       <ion-col></ion-col>
@@ -43,7 +43,7 @@
               }}
             </h3>
             <p *ngIf="discussion.isTyping" style="font-size: 10px; font-weight: bold; color: #00aaff">
-             vous écrit ...
+             {{ 'VOUS ECRIT' | translate }}
             </p>
             <p style="
               position: absolute;

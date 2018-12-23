@@ -9,6 +9,7 @@ import { ImagePicker, ImagePickerOptions } from '@ionic-native/image-picker/ngx'
 import { Camera, CameraOptions } from '@ionic-native/camera/ngx';
 
 import {FileManagerService} from '../services/file-manager.service';
+import {TranslateService} from '@ngx-translate/core';
 
 @Component({
   selector: 'app-tab3',
@@ -20,6 +21,10 @@ export class Tab3Page implements OnInit, OnDestroy {
     public user: User = null;
     public userSubscription: Subscription;
     public load = false;
+    private localParcourir = 'PARCOURIR';
+    private localGalerie = 'GALERIE';
+    private localFermer = 'FERMER';
+    private localAppareil = 'APPAREIL PHOTO';
 
     constructor(private modalController: ModalController,
                 private userService: UtilisateurService,
@@ -28,7 +33,8 @@ export class Tab3Page implements OnInit, OnDestroy {
                 public actionSheetController: ActionSheetController,
                 private imagePicker: ImagePicker,
                 private fileManagerService: FileManagerService,
-                private camera: Camera) {
+                private camera: Camera,
+                private translate: TranslateService) {
       this.whoIam.getUserInfo().then((u: User) => {
         this.user = u;
         // console.log(u);
@@ -36,7 +42,28 @@ export class Tab3Page implements OnInit, OnDestroy {
     }
 
     ngOnInit() {
+        this.whoIam.getUserInfo().then((u: User) => {
+            if (u.langue.code !== 'fr') {
+                this.translate.use('en');
+            } else {
+                this.translate.use('fr');
+            }
 
+            setTimeout(() => {
+                this.translate.get('' + this.localAppareil).subscribe(value => {
+                    this.localAppareil = value;
+                });
+                this.translate.get('' + this.localFermer).subscribe(value => {
+                    this.localFermer = value;
+                });
+                this.translate.get('' + this.localGalerie).subscribe(value => {
+                    this.localGalerie = value;
+                });
+                this.translate.get('' + this.localParcourir).subscribe(value => {
+                    this.localParcourir = value;
+                });
+            }, 100);
+        });
     }
 
     ngOnDestroy() {
@@ -45,9 +72,9 @@ export class Tab3Page implements OnInit, OnDestroy {
 
     async presentActionSheet() {
         const actionSheet = await this.actionSheetController.create({
-            header: 'Parcourir',
+            header: this.localParcourir,
             buttons: [{
-                text: 'Appareil photo',
+                text: this.localAppareil,
                 role: 'destructive',
                 icon: 'camera',
                 handler: () => {
@@ -55,14 +82,14 @@ export class Tab3Page implements OnInit, OnDestroy {
                     this.onOpenCamera();
                 }
             }, {
-                text: 'Galerie',
+                text: this.localGalerie,
                 icon: 'folder',
                 handler: () => {
                     console.log('Galeri clicked');
                     this.onOpenGalerie();
                 }
             }, {
-                text: 'Fermer',
+                text: this.localFermer,
                 icon: 'close',
                 role: 'cancel',
                 handler: () => {

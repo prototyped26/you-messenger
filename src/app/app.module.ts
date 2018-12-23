@@ -10,7 +10,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import {ContactListPage} from './screens/contact-list/contact-list.page';
 import {IonicStorageModule} from '@ionic/storage';
-import {HttpClientModule} from '@angular/common/http';
+import {HttpClient, HttpClientModule} from '@angular/common/http';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { SocketIoModule, SocketIoConfig } from 'ng-socket-io';
 
@@ -21,10 +21,16 @@ import {Keyboard} from '@ionic-native/keyboard/ngx';
 import {ImagePicker} from '@ionic-native/image-picker/ngx';
 import { Camera } from '@ionic-native/camera/ngx';
 
-// import {LocalNotifications} from '@ionic-native/local-notifications';
+import { AngularFireModule } from 'angularfire2';
+import { AngularFirestoreModule } from 'angularfire2/firestore';
+import { Firebase } from '@ionic-native/firebase/ngx';
 
-const ioConf: SocketIoConfig = { url: 'http://192.168.43.97:3000', options: {}};
-// const ioConf: SocketIoConfig = { url: 'https://youmessenger237.website', options: {}};
+import {LocalNotifications} from '@ionic-native/local-notifications/ngx';
+import {TranslateLoader, TranslateModule} from '@ngx-translate/core';
+import {createTranslateLoader} from './translate-loader';
+
+// const ioConf: SocketIoConfig = { url: 'http://192.168.43.97:3000', options: {}};
+const ioConf: SocketIoConfig = { url: 'https://youmessenger237.website', options: {}};
 const firebase = {
     apiKey: 'AIzaSyD6fpPKUn2D8uGp2Gvpw8IYjhB4t91e2po',
     authDomain: 'you-messenger-8c9d9.firebaseapp.com',
@@ -46,8 +52,16 @@ const firebase = {
       ReactiveFormsModule,
       SocketIoModule.forRoot(ioConf),
       CommonModule,
+      AngularFirestoreModule,
+      AngularFireModule.initializeApp(firebase),
+      TranslateModule.forRoot({
+          loader: {
+              provide: TranslateLoader,
+              useFactory: (createTranslateLoader),
+              deps: [HttpClient]
+          }
+      }),
       // EmojiPickerModule.forRoot()
-      //  LocalNotifications
   ],
   providers: [
     StatusBar,
@@ -55,6 +69,8 @@ const firebase = {
       Keyboard,
       ImagePicker,
       Camera,
+      Firebase,
+      LocalNotifications,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
   ],
   bootstrap: [AppComponent]

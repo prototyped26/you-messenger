@@ -6,6 +6,7 @@ import {User} from '../models/User.model';
 import {UtilisateurService} from '../services/utilisateur.service';
 import { Socket } from 'ng-socket-io';
 import {MessagesService} from '../services/messages.service';
+import {LocalNotifications} from '@ionic-native/local-notifications/ngx';
 
 @Injectable({
   providedIn: 'root'
@@ -15,7 +16,8 @@ export class TokenGuard implements CanActivate {
               private router: Router,
               private userService: UtilisateurService,
               private socket: Socket,
-              private messageService: MessagesService) {
+              private messageService: MessagesService,
+              private localNotifications: LocalNotifications) {
       // écoutes des messages venant des autres clients
       this.getMessages().subscribe((data: any) => {
           this.messageService.emitInCommingMessage(data);
@@ -51,7 +53,19 @@ export class TokenGuard implements CanActivate {
         return new Observable(observer => {
             this.socket.on('chat message', (data) => {
                 observer.next(data);
+                this.showLocalNotif(data);
             });
         });
+    }
+    showLocalNotif(data: any) {
+        // console.log(data);
+        const sender: User = data.sender;
+        console.log(sender);
+        this.localNotifications.schedule({
+            title: '' + sender.nom,
+            text: '' + data.message,
+            summary: '' + sender.telephone,
+        });
+
     }
 }

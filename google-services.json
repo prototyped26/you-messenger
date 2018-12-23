@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "1057649044428",
+    "firebase_url": "https://you-messenger-8c9d9.firebaseio.com",
+    "project_id": "you-messenger-8c9d9",
+    "storage_bucket": "you-messenger-8c9d9.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1057649044428:android:7a0fe74483bf7473",
+        "android_client_info": {
+          "package_name": "com.openstudio.youmessenger"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1057649044428-g7o69k4je0cjtoihnjph49ihup0b8tir.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB8G_qz5BTVslgHehXflSnpssMHJiTXhZs"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

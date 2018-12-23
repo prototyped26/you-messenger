@@ -4,6 +4,7 @@ import {Router} from '@angular/router';
 import {LoadingController, ToastController} from '@ionic/angular';
 import {User} from '../../models/User.model';
 import {UtilisateurService} from '../../services/utilisateur.service';
+import {TranslateService} from '@ngx-translate/core';
 
 @Component({
   selector: 'app-sign-in',
@@ -14,13 +15,33 @@ export class SignInPage implements OnInit {
 
   public telephone: string = null;
   public nom: string = null;
+  paramLocale = {value: 'world'};
+  private localMessage1 = 'SIGNMESSAGE ERROR1';
+    private localMessage2 = 'CHARGEMENT';
   constructor(private whoIam: WhoIAmService,
               private router: Router,
               private loadingCtrl: LoadingController,
               private toastCtrl: ToastController,
-              private userService: UtilisateurService) { }
+              private userService: UtilisateurService,
+              private translate: TranslateService) { }
 
   ngOnInit() {
+      this.whoIam.getUserInfo().then((u: User) => {
+          if (u.langue.code !== 'fr') {
+              this.translate.use('en');
+          } else {
+              this.translate.use('fr');
+          }
+
+          setTimeout(() => {
+              this.translate.get('SIGNMESSAGE ERROR1').subscribe(value => {
+                  this.localMessage1 = value;
+              });
+              this.translate.get('CHARGEMENT').subscribe(value => {
+                  this.localMessage2 = value;
+              });
+          }, 100);
+      });
   }
   onConitnue() {
     // console.log(this.telephone);
@@ -43,13 +64,13 @@ export class SignInPage implements OnInit {
             });
         });
     } else {
-      this.presentToast('Attention veuillez vérifier le numéro de téléphone !');
+      this.presentToast(this.localMessage1);
     }
 
   }
     async presentLoading() {
         const loading = await this.loadingCtrl.create({
-            message: 'Chargement...',
+            message: this.localMessage2,
             animated: true,
             duration: 10000
         });

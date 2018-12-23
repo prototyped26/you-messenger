@@ -7,6 +7,7 @@ import {Router} from '@angular/router';
 import {WhoIAmService} from '../../services/who-i-am.service';
 import {Langue} from '../../models/Langue.model';
 import {LanguesService} from '../../services/langues.service';
+import {TranslateService} from '@ngx-translate/core';
 
 @Component({
   selector: 'app-profil',
@@ -20,6 +21,7 @@ export class ProfilPage implements OnInit, OnDestroy {
     public langue: Langue = null;
     public loading: any;
     public error = '';
+    private localLoading = 'CHARGEMENT';
 
     constructor(private modalController: ModalController,
                 private userService: UtilisateurService,
@@ -27,7 +29,8 @@ export class ProfilPage implements OnInit, OnDestroy {
                 private loadingCtrl: LoadingController,
                 private router: Router,
                 private whoIam: WhoIAmService,
-                private toastCtrl: ToastController) {
+                private toastCtrl: ToastController,
+                private translate: TranslateService) {
         this.whoIam.getUserInfo().then((u: User) => {
             this.user = u;
             this.langue = u.langue;
@@ -39,6 +42,20 @@ export class ProfilPage implements OnInit, OnDestroy {
     }
 
   ngOnInit() {
+      this.whoIam.getUserInfo().then((u: User) => {
+          if (u.langue.code !== 'fr') {
+              this.translate.use('en');
+          } else {
+              this.translate.use('fr');
+          }
+
+          setTimeout(() => {
+             //
+              this.translate.get( '' + this.localLoading).subscribe(value => {
+                  this.localLoading = value;
+              });
+          }, 100);
+      });
   }
   ngOnDestroy() {}
   onChangeLanguage(val) {
@@ -81,7 +98,7 @@ export class ProfilPage implements OnInit, OnDestroy {
 
     async presentLoading() {
         this.loading = await this.loadingCtrl.create({
-            message: 'Chargement...',
+            message: this.localLoading,
             animated: true,
             duration: 4000
         });
