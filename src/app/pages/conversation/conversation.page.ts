@@ -11,6 +11,7 @@ import {MessagesService} from '../../services/messages.service';
 import {UtilisateurService} from '../../services/utilisateur.service';
 import {ITypingData} from '../../interfaces/ITypingData.interface';
 import * as momentJS from 'moment';
+import {HttpClient} from '@angular/common/http';
 
 @Component({
   selector: 'app-conversation',
@@ -36,7 +37,8 @@ export class ConversationPage implements OnInit, OnDestroy {
               private navCtl: NavController,
               private whoIam: WhoIAmService,
               private messageService: MessagesService,
-              private utilisateurService: UtilisateurService) {
+              private utilisateurService: UtilisateurService,
+              private httpClient: HttpClient) {
     /*this.messages.push({ id: 1, content: 'Comment tu vas ?', origin: 'you', user: null});
     this.messages.push({ id: 2, content: 'Ha je suis là ', origin: 'me', user: null});
     this.messages.push({ id: 3, content: 'et toi ?', origin: 'me', user: null});*/
@@ -187,15 +189,23 @@ export class ConversationPage implements OnInit, OnDestroy {
     if (this.message.length === 0) {
       // error
     } else {
-      const m: MessageInfo = {
+        // this.onTranslate(this.message);
+      /*const m: MessageInfo = {
           id: null, content: this.message, origin: 'me', user: this.toUser.id, sender: this.utilisateurService.user, see: true
-      };
-      this.message = '';
-      this.socket.emit('chat message', m);
+      };*/
+      this.whoIam.getUserInfo().then((sender: User) => {
+          const m = {
+              id: null, content: this.message, origin: 'me',
+              user: this.toUser.id, sender: this.utilisateurService.user, see: true,
+              locale: sender.langue.code
+          };
+          this.message = '';
+          this.socket.emit('chat message', m);
 
-      this.whoIam.storeListMessagesUser(this.toUser, m, momentJS(Date.now()).format('YYYY-MM-DD HH:mm:ss') );
-      this.messages.push(m);
-      this.scrollToBottom();
+          this.whoIam.storeListMessagesUser(this.toUser, m, momentJS(Date.now()).format('YYYY-MM-DD HH:mm:ss') );
+          this.messages.push(m);
+          this.scrollToBottom();
+      });
     }
   }
 
@@ -231,6 +241,5 @@ export class ConversationPage implements OnInit, OnDestroy {
             this.zone.nativeElement.scrollTop = this.zone.nativeElement.scrollHeight;
         } catch (err) { }
     }
-
 }
 
